@@ -4,9 +4,9 @@
 // Vitalii Pielievin - 300885108
 // Dmytro Andriichuk - 301132978
 //
-// Version - 1.00
+// Version - 1.0.0
 // Local Storage - no MongoDB implementation
-// 
+//
 
 
 var SERVER_NAME = 'patients-api'
@@ -62,9 +62,58 @@ server.get('/patients/:id', function (req, res, next) {
   })
 })
 
+// Add Patient Use Case
+server.post('/patients', function (req, res, next)
+{
+  // Make sure name is defined
+  if (req.params.firstname === undefined ) {
+    // If there are any errors, pass them to next in the correct format
+    return next(new restify.InvalidArgumentError('firstname must be supplied'))
+  }
+  if (req.params.lastname === undefined ) {
+    // If there are any errors, pass them to next in the correct format
+    return next(new restify.InvalidArgumentError('lastname must be supplied'))
+  }
+  if (req.params.address === undefined ) {
+    // If there are any errors, pass them to next in the correct format
+    return next(new restify.InvalidArgumentError('address must be supplied'))
+  }
+  if (req.params.room === undefined ) {
+    // If there are any errors, pass them to next in the correct format
+    return next(new restify.InvalidArgumentError('room must be supplied'))
+  }
+  if (req.params.notes === undefined) {
+    // If there are any errors, pass them to next in the correct format
+    return next(new restify.InvalidArgumentError('notes must be supplied'))
+  }
 
+  var newpatients = {
+    firstname: req.params.firstname,
+		lastname: req.params.lastname,
+    address: req.params.address,
+    room: req.params.room,
+    notes: req.params.notes
+	}
 
+  // Create the name using the persistence engine
+  patientsSave.create( newpatients, function (error, name) {
+    // If there are any errors, pass them to next in the correct format
+    if (error) return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
+    // Send the name if no issues
+    res.send(201, name)
+  })
+})
 
+// Delete patients
+server.del('/patients', function (req, res, next) {
 
+  // Delete the patients with the persistence engine
+  patientsSave.deleteMany(req.params, function (error, patients) {
 
+    // If there are any errors, pass them to next in the correct format
+    if (error) return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
 
+    // Send a 200 OK response
+    res.send(200, 'Deleted')
+  })
+})

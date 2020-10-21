@@ -1,0 +1,16 @@
+{
+  "name": "mapd-project-milestone2",
+  "version": "1.0.0",
+  "description": "Patients API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VitaliiPi/Group6_m2.git"
+  },
+  "author": "Pielievin Vitalii and Dmytro Andriichuk - Group 6",
+  "license": "ISC",
+  "homepage": "https://github.com/VitaliiPi/Group6_m2#readme"
+}
